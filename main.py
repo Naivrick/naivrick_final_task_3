@@ -57,31 +57,35 @@ def sales_over_time(sales_data: list[dict]) -> dict:
 
 def draw_all_sum_products(sales_data: dict) -> None:
     '''График общей суммы продаж по каждому продукту.'''
-    plt.bar(*zip(*sorted(sales_data.items(), key=lambda x: x[1])))
-    plt.xlabel('Продукты')
-    plt.ylabel('Прибыль')
-    plt.title('Общая сумма продаж по каждому продукту')
-    # plt.figure(figsize=(20,5))
+    fig, ax = plt.subplots()
+    plt.style.use('seaborn-v0_8-white')
+    data = zip(*sorted(sales_data.items(), key=lambda x: x[1]))
+    bar = ax.bar(*data, width=0.8, edgecolor="white")
+
+    ax.set(xlabel='Продукты', ylabel='Прибыль',
+           title='График общей суммы продаж по каждому продукту')
+    ax.bar_label(bar, fmt=lambda x: F"{x}₽")
     plt.show()
 
 
 def draw_all_sum_date(sales_data: dict) -> None:
     '''Построить график общей суммы продаж по дням'''
     fig, ax = plt.subplots()
-    plt.bar(*zip(*sorted(sales_data.items(), key=lambda x: x[0])))
-    fig.set_size_inches(15, 5)
-
-    plt.xlabel('Дата')
-    plt.ylabel('Прибыль')
-    plt.title('Общая сумма продаж по дням')
-
+    data = zip(*sorted(sales_data.items(), key=lambda x: x[0]))
+    bar = plt.bar(*data)
+    ax.set(xlabel='Дата', ylabel='Прибыль',
+           title='Общая сумма продаж по дням')
+    ax.bar_label(bar, fmt=lambda x: F"{x}₽")
+    fig.set_size_inches(w=1000, h=600)
     plt.show()
 
 
-products = read_sales_data('input_data.csv')
+products = read_sales_data('data/data_10.csv')
 # print(*products, sep='\n')
+print('График общей суммы продаж по каждому продукту.')
 draw_all_sum_products(total_sales_per_product(products))
 # print(*total_sales_per_product(products).items(), sep='\n')
-
+print('График общей суммы продаж по дням')
 # print(*sales_over_time(products).items(), sep='\n')
 draw_all_sum_date(sales_over_time(products))
+print('ВСЁ')
