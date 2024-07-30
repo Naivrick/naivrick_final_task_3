@@ -72,22 +72,17 @@ def draw_result(max_price_product, max_price_day):
     fig = plt.figure()
 
     fig.text(0.5, 0.6,
-             f"Наибольшую выручка: {max_price_product[0]} {
+             f"Наибольшая выручка: {max_price_product[0]} {
                  max_price_product[1]}₽",
              horizontalalignment='center',
              verticalalignment='center')
 
-    date_sale = f"{max_price_day[0].day}.{
-        max_price_day[0].month}.{max_price_day[0].year}"
+    date_sale = max_price_day[0].date()
     fig.text(0.5, 0.4,
              f"""Наибольшая сумма продаж была: {date_sale}
 Сумма: {max_price_day[1]}₽""",
         horizontalalignment='center',
         verticalalignment='center')
-
-    # fig.text(10, 10, 'продукт принес наибольшую выручку. ')
-    # день когда была наибольшая сумма продаж
-
     plt.show()
 
 
@@ -135,11 +130,13 @@ def main() -> None:
     # Определить, в какой день была наибольшая сумма продаж.
     max_price_day = max(sales_all_time.items(), key=lambda x: x[1])
 
-    draw_result(max_price_product, max_price_day)
-
     logging.info('Отрисовка графиков:')
+    draw_result(max_price_product, max_price_day)
+    logging.info('Результат показан')
     draw_all_sum_products(total_sales_products)  # Отрисовка графиков
+    logging.info('1 график показан')
     draw_all_sum_date(sales_all_time)
+    logging.info('1 график показан')
 
 
 if __name__ == '__main__':
